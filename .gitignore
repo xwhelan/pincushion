@@ -4,6 +4,13 @@
 # Build artifacts
 /build
 
+# CMake
+/CMakeFiles
+CmakeCache.txt
+Makefile
+cmake_install.cmake
+install_manifest.txt
+
 # Prerequisites
 *.d
 
