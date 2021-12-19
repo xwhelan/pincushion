@@ -1,14 +1,18 @@
 #include <string>
 #include <vector>
 
-#include "csv.cpp"
-
 #ifndef PINCUSHION_CSV
 #define PINCUSHION_CSV
 
-namespace pincushion::csv {
-    typedef std::vector<std::string> row;
-    row readCSVRow(const std::string &);
+namespace pincushion {
+    enum class CSVState {
+        UnquotedField,
+        QuotedField,
+        QuotedQuote
+    };
+
+    typedef std::vector<std::string> csvRow;
+    csvRow readCSVRow(const std::string &);
 }
 
-# endif
+#endif

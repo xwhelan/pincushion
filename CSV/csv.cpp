@@ -10,33 +10,25 @@
 
 #include "csv.hpp"
 
-using namespace pincushion;
-
-enum class CSVState {
-    UnquotedField,
-    QuotedField,
-    QuotedQuote
-};
-
-csv::row csv::readCSVRow(const std::string &row) {
-    CSVState state = CSVState::UnquotedField;
+pincushion::csvRow pincushion::readCSVRow(const std::string &row) {
+    CSVState state = pincushion::CSVState::UnquotedField;
     std::vector<std::string> fields {""};
     size_t i = 0; // index of the current field
     for (char c : row) {
         switch (state) {
-            case CSVState::UnquotedField:
+            case pincushion::CSVState::UnquotedField:
                 switch (c) {
                     case ',': // end of field
                               fields.push_back(""); i++;
                               break;
-                    case '"': state = CSVState::QuotedField;
+                    case '"': state = pincushion::CSVState::QuotedField;
                               break;
                     default:  fields[i].push_back(c);
                               break; }
                 break;
             case CSVState::QuotedField:
                 switch (c) {
-                    case '"': state = CSVState::QuotedQuote;
+                    case '"': state = pincushion::CSVState::QuotedQuote;
                               break;
                     default:  fields[i].push_back(c);
                               break; }
@@ -45,14 +37,14 @@ csv::row csv::readCSVRow(const std::string &row) {
                 switch (c) {
                     case ',': // , after closing quote
                               fields.push_back(""); i++;
-                              state = CSVState::UnquotedField;
+                              state = pincushion::CSVState::UnquotedField;
                               break;
                     case '"': // "" -> "
                               fields[i].push_back('"');
-                              state = CSVState::QuotedField;
+                              state = pincushion::CSVState::QuotedField;
                               break;
                     default:  // end of quote
-                              state = CSVState::UnquotedField;
+                              state = pincushion::CSVState::UnquotedField;
                               break; }
                 break;
         }
@@ -61,7 +53,7 @@ csv::row csv::readCSVRow(const std::string &row) {
 }
 
 /// Read CSV file, Excel dialect. Accept "quoted fields ""with quotes"""
-std::vector<csv::row> readCSV(std::istream &in) {
+std::vector<pincushion::csvRow> readCSV(std::istream &in) {
     std::vector<std::vector<std::string>> table;
     std::string row;
     while (!in.eof()) {
@@ -69,7 +61,7 @@ std::vector<csv::row> readCSV(std::istream &in) {
         if (in.bad() || in.fail()) {
             break;
         }
-        auto fields = readCSVRow(row);
+        auto fields = pincushion::readCSVRow(row);
         table.push_back(fields);
     }
     return table;

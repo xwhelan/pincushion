@@ -5,11 +5,12 @@
 /build
 
 # CMake
-/CMakeFiles
+**/CMakeFiles/**/*
 CmakeCache.txt
 Makefile
 cmake_install.cmake
 install_manifest.txt
+_deps
 
 # Prerequisites
 *.d
