@@ -20,4 +20,4 @@ target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
 # add_executable(custom-main-tests test.cpp test-main.cpp)
 # target_link_libraries(custom-main-tests PRIVATE Catch2::Catch2)
 
-add_test(NAME tests COMMAND tests)
+add_test(NAME test_csv COMMAND tests)
