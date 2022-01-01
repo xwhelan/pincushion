@@ -4,11 +4,18 @@ A repository of small [spikes](https://en.wikipedia.org/wiki/Spike_(software_dev
 
 ## Utilities and libraries
 
-csv2json:
+### csv2json
+
     - Read in CSV and emit JSON
     - Create utilities and types to read in CSVs
     - Emit JSON using headers
     - Handle command line options
+
+### pincushion CSV library
+
+Uses a simple finite state machine to parse CSV in accordance with
+[RFC 4180](https://datatracker.ietf.org/doc/html/rfc4180). Note that CSV only
+escapes quotes with double quotes.
 
 ## How to Build
 
@@ -33,7 +40,7 @@ have been making inroads.
 
 Some caveats:
 
-There's no easy way to make test execution dependento on building test
+There's no easy way to make test execution dependent on building test
 harnesses:
 
 <https://stackoverflow.com/questions/733475/cmake-ctest-make-test-doesnt-build-tests>
@@ -43,3 +50,6 @@ And then there's the whole problem of where to even run CMake to build:
 <https://stackoverflow.com/questions/9680420/looking-for-a-cmake-clean-command-to-clear-up-cmake-output>
 
 But in the end, the tests do run.
+
+Able to successfully run tests. Note that VSCode extension will run make, and
+then will run tests. Works well.
