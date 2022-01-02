@@ -28,13 +28,12 @@ add_subdirectory(CSV)
 
 # Build utility csv2json
 FIND_PACKAGE( Boost 1.76 COMPONENTS program_options REQUIRED )
-INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
-add_executable(csv2json src/csv2json.cpp)
-target_link_libraries(csv2json PUBLIC CSV ${Boost_LIBRARIES})
 
-target_include_directories(csv2json PUBLIC
-                          "${PROJECT_BINARY_DIR}"
-                          "${PROJECT_SOURCE_DIR}/CSV"
-                          )
+INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} CSV)
+add_executable(csv2json src/csv2json.cpp)
+target_link_libraries(csv2json
+  PRIVATE CSV
+  PUBLIC ${Boost_LIBRARIES})
+target_include_directories(csv2json PUBLIC "${PROJECT_SOURCE_DIR}/CSV")
 
 install(TARGETS csv2json DESTINATION bin)

@@ -1,4 +1,4 @@
-add_library(CSV csv.cpp)
+add_library(CSV STATIC csv.cpp)
 
 Include(FetchContent)
 
@@ -12,6 +12,7 @@ FetchContent_MakeAvailable(Catch2)
 set (CMAKE_CXX_STANDARD 11)
 
 include(CTest)
+
 # These tests can use the Catch2-provided main
 add_executable(tests test.cpp)
 target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)

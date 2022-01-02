@@ -1,14 +1,61 @@
+#include <fstream>
 #include <iostream>
 #include <string>
 #include <boost/program_options.hpp>
+#include <pincushion/csv.hpp>
 
 using namespace std;
 namespace po = boost::program_options;
+namespace csv = pincushion::csv;
+
+// Create a JSON object and print it
+void zip_json(csv::row header, csv::row values,
+                int indentation = 4, std::ostream output = std::cout
+) {
+    int header_cols = header.size();
+    int row_cols = row.size();
+    auto tab = std::string(' ', indentation);
+    output << tab << "{" << std::endl;
+    for (int i=0; i<header_cols; i++) {
+        output << tab << tab << "\"" << header[i] << "\": ";
+        output << i <= header_cols ? row[i] : "";
+        output << i < header_cols ? "\"" : "" << endl;
+    }
+    output << tab << "}";
+}
+
+
+// Write JSON from CSV file contents
+void to_json(std::string &inputfile,
+             int indentation = 4, std::ostream output = std::cout
+) {
+    fstream fd;
+    fd.open(inputfile, std::ios::in);
+    if (!fd.is_open()) {
+        std::cerr << "Unable to open file: " << inputfile << std::endl;
+        return;
+    }
+    std::string header_line;
+    getline(fd, header_line);
+    auto header = csv::readCSVLine(header_line);
+    output << "[";
+    std::string line;
+    bool first_element = true;
+    while( getline(fd, line) ) {
+        if (!first_element) {
+            output << ",";
+        }
+        output << std::endl;
+        zip_json(header, csv::readCSVLine(line), indentation, output);
+    }
+    output << "]" << std::endl;
+}
+
 
 int main(int argc, char *argv[])
 {
     // Declare the supported options.
-    po::options_description desc("usage:");
+    po::options_description desc("usage");
     desc.add_options()
         ("help,h", "display this help message")
     ;
@@ -44,7 +91,7 @@ int main(int argc, char *argv[])
 
     if (!vm.count("inputfile"))
     {
-        cerr << "Input file name required." << "\n";
+        cerr << "Input file name required." << "\n\n" << desc << "\n";
         return 1;
     }
 
