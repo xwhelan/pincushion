@@ -53,3 +53,8 @@ But in the end, the tests do run.
 
 Able to successfully run tests. Note that VSCode extension will run make, and
 then will run tests. Works well.
+
+## CMake project organization
+
+Referred to Boost's program_options library for example of standards:
+<https://github.com/boostorg/program_options/blob/develop/CMakeLists.txt>
