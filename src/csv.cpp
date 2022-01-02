@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-#include "csv.hpp"
+#include "pincushion/csv.hpp"
 
 namespace csv = pincushion::csv;
 

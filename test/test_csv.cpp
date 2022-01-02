@@ -1,7 +1,8 @@
 #include <catch2/catch_test_macros.hpp>
 #include <string>
 #include <vector>
-#include "csv.cpp"
+
+#include <pincushion/csv.hpp>
 
 namespace csv = pincushion::csv;
 

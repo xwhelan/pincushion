@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.0.0)
 
+set(CMAKE_OSX_ARCHITECTURES "arm64")
+
 # Configuration types
 SET(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Configs" FORCE)
 IF(DEFINED CMAKE_BUILD_TYPE)
@@ -23,17 +25,31 @@ set (CMAKE_CXX_STANDARD 11)
 # Use CTest for running tests
 include(CTest)
 
-# Add pincushion_csv
-add_subdirectory(CSV)
+# Add library
+add_library(pincushion
+  src/csv.cpp
+  include/pincushion/csv.hpp
+)
 
 # Build utility csv2json
+add_executable(csv2json src/csv2json.cpp)
 FIND_PACKAGE( Boost 1.76 COMPONENTS program_options REQUIRED )
 
-INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} CSV)
-add_executable(csv2json src/csv2json.cpp)
+target_include_directories(csv2json
+  PUBLIC ${Boost_INCLUDE_DIR} include)
+
 target_link_libraries(csv2json
-  PRIVATE CSV
-  PUBLIC ${Boost_LIBRARIES})
-target_include_directories(csv2json PUBLIC "${PROJECT_SOURCE_DIR}/CSV")
+  PUBLIC ${Boost_LIBRARIES}
+  PRIVATE pincushion
+)
+target_include_directories(csv2json
+  PUBLIC ${Boost_INCLUDE_DIR}
+)
+
+include_directories(include)
 
 install(TARGETS csv2json DESTINATION bin)
+
+if(BUILD_TESTING AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/test/CMakeLists.txt")
+  add_subdirectory(test)
+endif()
