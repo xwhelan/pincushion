@@ -1,3 +1,17 @@
+# IDE droppings
+/.vscode
+
+# Build artifacts
+/build
+
+# CMake
+**/CMakeFiles/**/*
+CmakeCache.txt
+Makefile
+cmake_install.cmake
+install_manifest.txt
+_deps
+
 # Prerequisites
 *.d
 
