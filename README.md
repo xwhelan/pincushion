@@ -2,6 +2,8 @@
 
 A repository of small [spikes](https://en.wikipedia.org/wiki/Spike_(software_development)) with general applicability.
 
+![CMake build status](https://github.com/xwhelan/pincushion/actions/workflows/cmake.yml/badge.svg)
+
 ## Utilities and libraries
 
 ### csv2json
