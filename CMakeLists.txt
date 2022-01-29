@@ -33,7 +33,7 @@ add_library(pincushion
 
 # Build utility csv2json
 add_executable(csv2json src/csv2json.cpp)
-FIND_PACKAGE( Boost 1.76 COMPONENTS program_options REQUIRED )
+FIND_PACKAGE( Boost 1.71 COMPONENTS program_options REQUIRED )
 
 target_include_directories(csv2json
   PUBLIC ${Boost_INCLUDE_DIR} include)
