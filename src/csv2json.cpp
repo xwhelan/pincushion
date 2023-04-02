@@ -25,7 +25,7 @@ std::string quote(std::string raw) {
 
 // Create a JSON object and print it
 void zip_json(
-    csv::row header, csv::row values,
+    const csv::row& header, const csv::row& values,
     int indentation = 4, std::ostream &output = std::cout
 ) {
     int header_cols = header.size();
