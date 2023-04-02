@@ -21,33 +21,38 @@ csv::row csv::readCSVRow(const std::string &row) {
             case csv::CSVState::UnquotedField:
                 switch (c) {
                     case ',': // end of field
-                              fields.push_back(""); i++;
-                              break;
-                    case '"': state = csv::CSVState::QuotedField;
-                              break;
+                        fields.push_back(""); i++;
+                        break;
+                    case '"': // Finding a quote, transition state
+                        state = csv::CSVState::QuotedField;
+                        break;
+                    case '\r': // Carriage return from Windows format
+                        break;
                     default:  fields[i].push_back(c);
-                              break; }
+                        break; }
                 break;
             case CSVState::QuotedField:
                 switch (c) {
-                    case '"': state = csv::CSVState::QuotedQuote;
-                              break;
-                    default:  fields[i].push_back(c);
-                              break; }
+                    case '"': 
+                        state = csv::CSVState::QuotedQuote;
+                        break;
+                    default:  
+                        fields[i].push_back(c);
+                        break; }
                 break;
             case CSVState::QuotedQuote:
                 switch (c) {
                     case ',': // , after closing quote
-                              fields.push_back(""); i++;
-                              state = csv::CSVState::UnquotedField;
-                              break;
+                        fields.push_back(""); i++;
+                        state = csv::CSVState::UnquotedField;
+                        break;
                     case '"': // "" -> "
-                              fields[i].push_back('"');
-                              state = csv::CSVState::QuotedField;
-                              break;
+                        fields[i].push_back('"');
+                        state = csv::CSVState::QuotedField;
+                        break;
                     default:  // end of quote
-                              state = csv::CSVState::UnquotedField;
-                              break; }
+                        state = csv::CSVState::UnquotedField;
+                        break; }
                 break;
         }
     }
@@ -55,15 +60,15 @@ csv::row csv::readCSVRow(const std::string &row) {
 }
 
 /// Read CSV file, Excel dialect. Accept "quoted fields ""with quotes"""
-std::vector<csv::row> readCSV(std::istream &in) {
-    std::vector<std::vector<std::string>> table;
-    std::string row;
+csv::table readCSV(std::istream &in) {
+    csv::table table;
+    std::string row_buffer;
     while (!in.eof()) {
-        std::getline(in, row);
+        std::getline(in, row_buffer);
         if (in.bad() || in.fail()) {
             break;
         }
-        auto fields = csv::readCSVRow(row);
+        auto fields = csv::readCSVRow(row_buffer);
         table.push_back(fields);
     }
     return table;

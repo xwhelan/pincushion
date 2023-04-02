@@ -5,7 +5,10 @@
 #define PINCUSHION_CSV
 
 namespace pincushion { namespace csv {
+    
     typedef std::vector<std::string> row;
+    typedef std::vector<row> table;
+
     row readCSVRow(const std::string &);
 
     // Private members via anonymous namespace

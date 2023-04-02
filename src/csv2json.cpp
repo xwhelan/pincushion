@@ -9,20 +9,39 @@ using namespace std;
 namespace po = boost::program_options;
 namespace csv = pincushion::csv;
 
+// Quote JSON string and escape double quote character
+std::string quote(std::string raw) {
+    std::string quoted;
+    quoted += '"';
+    for (auto it = raw.begin(); it != raw.end(); it++) {
+        if (*it == '"') {
+            quoted += '\\';
+        }
+        quoted += *it;
+    }
+    quoted += '"';
+    return quoted;
+}
+
 // Create a JSON object and print it
-void zip_json(csv::row header, csv::row values,
-                int indentation = 4, std::ostream& output = std::cout
+void zip_json(
+    csv::row header, csv::row values,
+    int indentation = 4, std::ostream &output = std::cout
 ) {
     int header_cols = header.size();
     int row_cols = values.size();
-    auto tab = std::string(indentation, ' ');
-    output << tab << "{" << std::endl;
+    auto indent = std::string(indentation, ' ');
+    output << indent << "{" << std::endl;
     for (int i=0; i<header_cols; i++) {
-        output << tab << tab << "\"" << header[i] << "\": \"";
-        output << ((i < header_cols) ? values[i] : "") << "\"";
-        output << ((i < header_cols-1) ? "," : "") << std::endl;
+        auto key = quote(header[i]);
+        auto value = quote(values[i]);
+        output << indent << indent << key << ": " << value;
+        if (i < header_cols-1) {
+            output << ",";
+        }
+        output << std::endl;
     }
-    output << tab << "}";
+    output << indent << "}";
 }
 
 
@@ -38,7 +57,7 @@ void to_json(std::string inputfile,
     }
     std::string header_line;
     getline(fd, header_line);
-    auto header = csv::readCSVRow(header_line);
+    const auto header = csv::readCSVRow(header_line);
     output << "[";
     std::string line;
     bool first_element = true;
